@@ -32,17 +32,15 @@ security.update_token({
 
 tokens = security.refresh()
 
-# print tokens
+operations = []
+for page in range(1,20):
+    operations.append(
+        app.op['get_markets_structures_structure_id'](
+            structure_id=1022734985679,
+            page=page
+        )
+    )
 
-op = app.op['get_markets_structures_structure_id'](
-    structure_id=1022734985679,
-    page='-1'
-)
+results = client.multi_request(operations)
 
-structure = client.request(op)
-
-y=0
-
-for x in structure.data:
-	print str(structure.data[y].type_id) + ', ' + str(structure.data[y].price) + ', ' + str(structure.data[y].is_buy_order)
-	y+=1
+print results[7][1].data[0].price
