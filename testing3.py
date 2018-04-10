@@ -43,4 +43,7 @@ for page in range(1,20):
 
 results = client.multi_request(operations)
 
-print results[7][1].data[0].price
+
+for (req, res) in results: 
+    for order in res.data:
+    	print str(order.type_id) + ', ' + str(order.price) + ', ' + str(order.is_buy_order)
