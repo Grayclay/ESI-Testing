@@ -2,6 +2,7 @@ from esipy import App
 from esipy import EsiClient
 from esipy import EsiSecurity
 import json
+import csv
 
 app = App.create(url="https://esi.tech.ccp.is/latest/swagger.json?datasource=tranquility")
 
@@ -47,3 +48,10 @@ results = client.multi_request(operations)
 for (req, res) in results: 
     for order in res.data:
     	print str(order.type_id) + ', ' + str(order.price) + ', ' + str(order.is_buy_order)
+
+with open('test.csv', 'wb') as csvfile:
+    datawriter = csv.writer(csvfile, delimiter=',')
+    datawriter.writerow(['type_id','price','is_buy_order'])
+    for (req, res) in results:
+        for order in res.data:
+            datawriter.writerow([order.type_id,order.price,order.is_buy_order])
